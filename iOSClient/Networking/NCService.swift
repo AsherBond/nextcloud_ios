@@ -422,7 +422,7 @@ class NCService: NSObject {
     func getTextProcessingTaskTypes() {
         NextcloudKit.shared.getTextProcessingTaskTypes(options: NKRequestOptions(queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)) { task in
         } completion: { account, types, data, error in
-            print(types)
+            print(account, types, data, error)
         }
     }
 }
