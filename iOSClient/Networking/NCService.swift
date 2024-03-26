@@ -52,7 +52,7 @@ class NCService: NSObject {
                 NCNetworkingE2EE().unlockAll(account: account)
                 sendClientDiagnosticsRemoteOperation(account: account)
                 // TEST ASSISTANT
-                getTextProcessingTaskTypes()
+                textProcessing()
             }
         }
     }
@@ -419,10 +419,17 @@ class NCService: NSObject {
         }
     }
 
-    func getTextProcessingTaskTypes() {
-        NextcloudKit.shared.getTextProcessingTaskTypes(options: NKRequestOptions(queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)) { task in
-        } completion: { account, types, data, error in
-            print(account, types, data, error)
+    func textProcessing() {
+        NextcloudKit.shared.textProcessingGetTypes(options: NKRequestOptions(queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)) { task in
+            print(task)
+        } completion: { _, types, _, error in
+            if error == .success, let types = types, let typeId = types.first?.id {
+                NextcloudKit.shared.textProcessingSchedule(input: "hallo", typeId: typeId, identifier: "NextcloudiOS") { _, task, _, error in
+                    if error == .success, let task = task, let output = task.output {
+                        print(output)
+                    }
+                }
+            }
         }
     }
 }
