@@ -51,6 +51,8 @@ class NCService: NSObject {
                 requestDashboardWidget()
                 NCNetworkingE2EE().unlockAll(account: account)
                 sendClientDiagnosticsRemoteOperation(account: account)
+                // TEST ASSISTANT
+                getTextProcessingTaskTypes()
             }
         }
     }
@@ -414,6 +416,13 @@ class NCService: NSObject {
             }
         } catch {
             print("Error: \(error.localizedDescription)")
+        }
+    }
+
+    func getTextProcessingTaskTypes() {
+        NextcloudKit.shared.getTextProcessingTaskTypes(options: NKRequestOptions(queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)) { task in
+        } completion: { account, types, data, error in
+            print(types)
         }
     }
 }
