@@ -51,7 +51,7 @@ extension AppDelegate {
         actions.append(
             NCMenuAction(
                 title: NSLocalizedString("_upload_file_", comment: ""), icon: UIImage(named: "file")!.image(color: UIColor.systemGray, size: 50), action: { _ in
-                    if let tabBarController = self.window?.rootViewController as? UITabBarController {
+                    if let tabBarController = UIApplication.shared.activeWindow?.rootViewController as? UITabBarController {
                         self.documentPickerViewController = NCDocumentPickerViewController(tabBarController: tabBarController, isViewerMedia: false, allowsMultipleSelection: true)
                     }
                 }
@@ -76,7 +76,7 @@ extension AppDelegate {
         actions.append(
             NCMenuAction(
                 title: NSLocalizedString("_scans_document_", comment: ""), icon: NCUtility().loadImage(named: "doc.text.viewfinder"), action: { _ in
-                    if let viewController = appDelegate.window?.rootViewController {
+                    if let viewController = UIApplication.shared.activeWindow?.rootViewController {
                         NCDocumentCamera.shared.openScannerDocument(viewController: viewController)
                     }
                 }
@@ -91,7 +91,7 @@ extension AppDelegate {
                             if let viewController = UIStoryboard(name: "NCAudioRecorderViewController", bundle: nil).instantiateInitialViewController() as? NCAudioRecorderViewController {
                                 viewController.modalTransitionStyle = .crossDissolve
                                 viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-                                appDelegate.window?.rootViewController?.present(viewController, animated: true, completion: nil)
+                                UIApplication.shared.activeWindow?.rootViewController?.present(viewController, animated: true, completion: nil)
                             }
                         }
                     }
@@ -110,7 +110,7 @@ extension AppDelegate {
                          icon: imageCreateFolder.image(color: NCBrandColor.shared.brandElement, size: 50), action: { _ in
                              guard !appDelegate.activeServerUrl.isEmpty else { return }
                              let alertController = UIAlertController.createFolder(serverUrl: appDelegate.activeServerUrl, urlBase: appDelegate)
-                             appDelegate.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+                             UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
                          }
                         )
         )
@@ -123,7 +123,7 @@ extension AppDelegate {
                              action: { _ in
                                  guard !appDelegate.activeServerUrl.isEmpty else { return }
                                  let alertController = UIAlertController.createFolder(serverUrl: appDelegate.activeServerUrl, urlBase: appDelegate, markE2ee: true)
-                                 appDelegate.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+                                 UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
                              })
             )
         }
@@ -166,7 +166,7 @@ extension AppDelegate {
                             viewController.serverUrl = appDelegate.activeServerUrl
                             viewController.titleForm = NSLocalizedString("_create_new_document_", comment: "")
 
-                            appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                            UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                         }
                     }
                 )
@@ -190,7 +190,7 @@ extension AppDelegate {
                             viewController.serverUrl = appDelegate.activeServerUrl
                             viewController.titleForm = NSLocalizedString("_create_new_spreadsheet_", comment: "")
 
-                            appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                            UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                         }
                     }
                 )
@@ -214,7 +214,7 @@ extension AppDelegate {
                             viewController.serverUrl = appDelegate.activeServerUrl
                             viewController.titleForm = NSLocalizedString("_create_new_presentation_", comment: "")
 
-                            appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                            UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                         }
                     }
                 )
@@ -237,7 +237,7 @@ extension AppDelegate {
                                 viewController.serverUrl = appDelegate.activeServerUrl
                                 viewController.titleForm = NSLocalizedString("_create_nextcloudtext_document_", comment: "")
 
-                                appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                                UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                             }
                         }
                     )
@@ -257,7 +257,7 @@ extension AppDelegate {
                                 viewController.serverUrl = appDelegate.activeServerUrl
                                 viewController.titleForm = NSLocalizedString("_create_new_spreadsheet_", comment: "")
 
-                                appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                                UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                             }
                         }
                     )
@@ -277,7 +277,7 @@ extension AppDelegate {
                                 viewController.serverUrl = appDelegate.activeServerUrl
                                 viewController.titleForm = NSLocalizedString("_create_new_presentation_", comment: "")
 
-                                appDelegate.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                                UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true, completion: nil)
                             }
                         }
                     )

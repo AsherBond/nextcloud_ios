@@ -34,7 +34,6 @@ import Queuer
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, NCUserBaseUrl {
 
     var backgroundSessionCompletionHandler: (() -> Void)?
-    var window: UIWindow?
 
     @objc var account: String = ""
     @objc var urlBase: String = ""
@@ -296,7 +295,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        NCNetworking.shared.checkPushNotificationServerProxyCertificateUntrusted(viewController: window?.rootViewController) { error in
+        NCNetworking.shared.checkPushNotificationServerProxyCertificateUntrusted(viewController: UIApplication.shared.activeWindow?.rootViewController) { error in
             if error == .success {
                 NCPushNotification.shared().registerForRemoteNotifications(withDeviceToken: deviceToken)
             }
@@ -329,13 +328,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     let navigationController = UINavigationController(rootViewController: viewController)
                     navigationController.modalPresentationStyle = .fullScreen
-                    self.window?.rootViewController?.present(navigationController, animated: true)
+                    UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true)
                 }
             } else if !findAccount {
                 let message = NSLocalizedString("_the_account_", comment: "") + " " + accountPush + " " + NSLocalizedString("_does_not_exist_", comment: "")
                 let alertController = UIAlertController(title: NSLocalizedString("_info_", comment: ""), message: message, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("_ok_", comment: ""), style: .default, handler: { _ in }))
-                self.window?.rootViewController?.present(alertController, animated: true, completion: { })
+                UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true, completion: { })
             }
         }
     }
@@ -404,8 +403,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 navigationController.navigationBar.tintColor = NCBrandColor.shared.customerText
                 navigationController.navigationBar.barTintColor = NCBrandColor.shared.customer
                 navigationController.navigationBar.isTranslucent = false
-                window?.rootViewController = navigationController
-                window?.makeKeyAndVisible()
+                // window?.rootViewController = navigationController
+                // window?.makeKeyAndVisible()
             }
         } else if contextViewController is UINavigationController {
             if let contextViewController = contextViewController, let viewController = viewController {
@@ -430,7 +429,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     @objc private func checkErrorNetworking() {
         guard !account.isEmpty, NCKeychain().getPassword(account: account).isEmpty else { return }
-        openLogin(viewController: window?.rootViewController, selector: NCGlobal.shared.introLogin, openLoginWeb: true)
+        openLogin(viewController: UIApplication.shared.activeWindow?.rootViewController, selector: NCGlobal.shared.introLogin, openLoginWeb: true)
     }
 
     func trustCertificateError(host: String) {
@@ -461,11 +460,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                let viewController = navigationController.topViewController as? NCViewCertificateDetails {
                 viewController.delegate = self
                 viewController.host = host
-                self.window?.rootViewController?.present(navigationController, animated: true)
+                UIApplication.shared.activeWindow?.rootViewController?.present(navigationController, animated: true)
             }
         }))
 
-        window?.rootViewController?.present(alertController, animated: true)
+        UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true)
     }
 
     // MARK: - Account
@@ -547,7 +546,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     self.changeAccount(newAccount, userProfile: nil)
                 }
             } else {
-                openLogin(viewController: window?.rootViewController, selector: NCGlobal.shared.introLogin, openLoginWeb: false)
+                openLogin(viewController: UIApplication.shared.activeWindow?.rootViewController, selector: NCGlobal.shared.introLogin, openLoginWeb: false)
             }
         }
     }
@@ -624,13 +623,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 guard let actionScheme = queryItems?.filter({ $0.name == "action" }).first?.value,
                       let userScheme = queryItems?.filter({ $0.name == "user" }).first?.value,
                       let urlScheme = queryItems?.filter({ $0.name == "url" }).first?.value,
-                      let rootViewController = window?.rootViewController else { return false }
+                      let rootViewController = UIApplication.shared.activeWindow?.rootViewController else { return false }
                 if getMatchedAccount(userId: userScheme, url: urlScheme) == nil {
                     let message = NSLocalizedString("_the_account_", comment: "") + " " + userScheme + NSLocalizedString("_of_", comment: "") + " " + urlScheme + " " + NSLocalizedString("_does_not_exist_", comment: "")
                     let alertController = UIAlertController(title: NSLocalizedString("_info_", comment: ""), message: message, preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("_ok_", comment: ""), style: .default, handler: { _ in }))
 
-                    window?.rootViewController?.present(alertController, animated: true, completion: { })
+                    UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true, completion: { })
                     return false
                 }
 
@@ -703,7 +702,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let alertController = UIAlertController(title: NSLocalizedString("_info_", comment: ""), message: message, preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("_ok_", comment: ""), style: .default, handler: { _ in }))
 
-                    window?.rootViewController?.present(alertController, animated: true, completion: { })
+                    UIApplication.shared.activeWindow?.rootViewController?.present(alertController, animated: true, completion: { })
                     return false
                 }
 
@@ -810,7 +809,7 @@ extension AppDelegate: NCPasscodeDelegate {
                 let popup = NCPopupViewController(contentController: viewController, popupWidth: 300, popupHeight: height + 20)
                 popup.backgroundAlpha = 0.8
 
-                window?.rootViewController?.present(popup, animated: true)
+                UIApplication.shared.activeWindow?.rootViewController?.present(popup, animated: true)
                 viewController.startTimer()
             }
         }

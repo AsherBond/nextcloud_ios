@@ -135,7 +135,7 @@ class NCDocumentPickerViewController: NSObject, UIDocumentPickerDelegate {
         documentProviderMenu.popoverPresentationController?.sourceRect = tabBarController.tabBar.bounds
         documentProviderMenu.delegate = self
 
-        appDelegate.window?.rootViewController?.present(documentProviderMenu, animated: true, completion: nil)
+        UIApplication.shared.activeWindow?.rootViewController?.present(documentProviderMenu, animated: true, completion: nil)
     }
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
@@ -192,7 +192,7 @@ class NCDocumentPickerViewController: NSObject, UIDocumentPickerDelegate {
                     conflict.serverUrl = serverUrl
                     conflict.metadatasUploadInConflict = metadatasInConflict
 
-                    appDelegate.window?.rootViewController?.present(conflict, animated: true, completion: nil)
+                    UIApplication.shared.activeWindow?.rootViewController?.present(conflict, animated: true, completion: nil)
                 }
             }
         }
