@@ -351,7 +351,7 @@ extension NCEndToEndMetadata {
             guard let keyChecksums = jsonCiphertextMetadata.keyChecksums, !keyChecksums.isEmpty else {
                 return NKError(
                     errorCode: NCGlobal.shared.errorE2EEKeyChecksums,
-                    errorDescription: NSLocalizedString("_e2ee_key_checksums_", comment: ""))
+                    errorDescription: NSLocalizedString("_e2ee_key_no_checksums_found_", comment: ""))
             }
             guard let hash = NCEndToEndEncryption.shared().createSHA256(decryptedMetadataKey),
                   keyChecksums.contains(hash) else {
